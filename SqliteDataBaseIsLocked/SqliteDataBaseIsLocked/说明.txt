@@ -1,0 +1,30 @@
+﻿Sqlite同时读写、写写的连接和命令
+
+背景
+	当前spf中多个地方直接使用ConnectString 建立SqliteConnect进行文件的读写，这样就造成了一个数据库文件同时会
+有多个连接，当有连接有一个写连接后，在来一个写或读连接就极易生成database is locked的异常。
+
+目标
+	1，只要data.db的路径相同，那么所有新建的Connect都是一个。
+	2，data.db的路径相同时，所有connect中只要有一个写，那么所有的Connect都是同一个，否则，建立不同的Connect
+
+目标评价
+	“目标1”比较简单，“目标2”复杂，所以先实现“目标1”
+
+设计
+	建立类SqliteRWConnection，其提供了SQLiteConnection的所有方法。
+	建立类SqliteRWCommand，其提供SQLiteCommand的所有方法。
+
+	SqliteRWConnection{
+	 private readonly static Dictionary<string，SqliteConnection> dbFiles=new Dictionary<string，SqliteConnection>();
+	 private curDbfile;
+	 private SqliteConnection connection;
+
+	 构造方法（data.db）
+	 Dispose():从dbFiles删除curDbFile，Dispose  connection；
+	}
+
+	SqliteRWCommand{
+	
+	}
+
