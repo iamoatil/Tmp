@@ -11,15 +11,20 @@
 目标评价
 	“目标1”比较简单，“目标2”复杂，所以先实现“目标1”
 
-设计
+分析
+	1，错误分析
+	一个不严谨的、设计有问题代码，见历史记录“加入SqliteDataBaseIsLocked临时代码”
 	建立类SqliteRWConnection，其提供了SQLiteConnection的所有方法。
 	建立类SqliteRWCommand，其提供SQLiteCommand的所有方法。
 
 	SqliteRWConnection{
 	 private readonly static Dictionary<string，SqliteConnection> dbFiles=new Dictionary<string，SqliteConnection>();
+	 private static object locker;
 	 private curDbfile;
 	 private SqliteConnection connection;
 
+	 CreateCommand();
+	 BeginTransaction();
 	 构造方法（data.db）
 	 Dispose():从dbFiles删除curDbFile，Dispose  connection；
 	}
