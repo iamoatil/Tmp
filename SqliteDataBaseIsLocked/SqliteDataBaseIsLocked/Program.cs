@@ -33,11 +33,11 @@ namespace SqliteDataBaseIsLocked
         public void Initialize(string dbFile)
         {
             IsInitialized = false;
-            SqliteRWConnection.CreateFile(dbFile);
+            SqliteSingleConnection .CreateFile(dbFile);
 
             SQLiteConnectionStringBuilder sb = new SQLiteConnectionStringBuilder();
             sb.DataSource = dbFile;
-            using (SqliteRWConnection connection = new SqliteRWConnection(sb))
+            using (SqliteSingleConnection  connection = new SqliteSingleConnection (sb))
             {
                 connection.Open();               
                 using (SQLiteCommand cmd = connection.CreateCommand())
@@ -61,7 +61,7 @@ namespace SqliteDataBaseIsLocked
         {
             SQLiteConnectionStringBuilder sb = new SQLiteConnectionStringBuilder();
             sb.DataSource = dbFile;
-            SqliteRWConnection connection = new SqliteRWConnection(sb);
+            SqliteSingleConnection  connection = new SqliteSingleConnection (sb);
             connection.Open();
             using (SQLiteCommand cmd = connection.CreateCommand())
             {
@@ -93,14 +93,14 @@ namespace SqliteDataBaseIsLocked
             }
         }
 
-        SqliteRWConnection connection;
+        SqliteSingleConnection  connection;
         public void Write(string dbFile)
         {
             SQLiteConnectionStringBuilder sb = new SQLiteConnectionStringBuilder();
             sb.DataSource = dbFile;
             //if (connection == null)
             {
-                connection = new SqliteRWConnection(sb);
+                connection = new SqliteSingleConnection ($"Data Source={dbFile};");
                 connection.Open();
             }
             
